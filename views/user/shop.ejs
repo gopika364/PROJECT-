@@ -1,0 +1,244 @@
+<%-include('header')-%>
+
+<div id="page-content">
+    <!--Collection Banner-->
+    <div class="collection-header">
+        <div class="collection-hero">
+            <div class="collection-hero__image"><img class="blur-up lazyload" data-src="/user/images/cat-women2.jpg" src="/user/images/cat-women2.jpg" alt="Women" title="Women" /></div>
+            <div class="collection-hero__title-wrapper"><h1 class="collection-hero__title page-width">Shop Grid 3 Column</h1></div>
+          </div>
+    </div>
+    <!--End Collection Banner-->
+    <div style="margin-top: 30px;" class="container">
+        <div class="row">
+            <!--Sidebar-->
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3 sidebar filterbar">
+                <div class="closeFilter d-block d-md-none d-lg-none"><i class="icon icon anm anm-times-l"></i></div>
+                <div class="sidebar_tags">
+                    <!--Categories-->
+                    <div class="sidebar_widget categories filter-widget">
+                        <div class="widget-title"><h2>Categories</h2></div>
+                        <div class="widget-content">
+                            <ul class="sidebar_categories">
+                                <li class="level2"><a href="/shop" class="site-nav">ALL PRODUCTS</a></li>
+                                <% category.forEach((row,index) => { %>
+                                    <% if(row.isAvailable == true) { %>
+                                    <li class="level2"><a href="/shopCategory/<%= row.category %>" class="site-nav"><%= row.category %></a></li>
+                                   <% } %>
+                               <% }) %>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--Categories-->
+                    <!--Price Filter-->
+                    <div class="sidebar_widget filterBox filter-widget">
+                        <div class="widget-title">
+                            <h2>Price</h2>
+                        </div>
+                        <form action="#" method="post" class="price-filter">
+                            <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
+                                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+                                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="no-margin"><input id="amount" type="text"></p>
+                                </div>
+                                <div class="col-6 text-right margin-25px-top">
+                                    <button class="btn btn-secondary btn--small">filter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    
+                    <!--Banner-->
+                    <div class="sidebar_widget static-banner">
+                        <img src="/user/images/side-banner-2.jpg" alt="" />
+                    </div>
+                    <!--Banner-->
+                </div>
+            </div>
+            <!--End Sidebar-->
+            <!--Main Content-->
+            <div class="col-12 col-sm-12 col-md-9 col-lg-9 main-col">
+                
+                <hr>
+                <div class="productList">
+                    <!--Toolbar-->
+                    <button type="button" class="btn btn-filter d-block d-md-none d-lg-none"> Product Filters</button>
+                    <div class="toolbar">
+                        <div class="filters-toolbar-wrapper">
+                            <div class="row">
+                                <!-- <div class="col-4 col-md-4 col-lg-4 filters-toolbar__item collection-view-as d-flex justify-content-start align-items-center">
+                                    <a href="shop-left-sidebar.html" title="Grid View" class="change-view change-view--active">
+                                        <img src="/user/images/grid.jpg" alt="Grid" />
+                                    </a>
+                                    <a href="shop-listview.html" title="List View" class="change-view">
+                                        <img src="/user/images/list.jpg" alt="List" />
+                                    </a>
+                                </div> -->
+                                <div class="col-4 col-md-4 col-lg-4 text-center filters-toolbar__item filters-toolbar__item--count d-flex justify-content-center align-items-center">
+                                </div>
+                                <div class="col-4 col-md-4 col-lg-4 text-right">
+                                    <!-- <div class="filters-toolbar__item">
+                                          <label for="SortBy" class="hidden">Sort</label>
+                                          <select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort">
+                                            <option value="title-ascending" selected="selected">Sort</option>
+                                            <option>Best Selling</option>
+                                            <option>Alphabetically, A-Z</option>
+                                            <option>Alphabetically, Z-A</option>
+                                            <option>Price, low to high</option>
+                                            <option>Price, high to low</option>
+                                            <option>Date, new to old</option>
+                                            <option>Date, old to new</option>
+                                          </select>
+                                          <input class="collection-header__default-sort" type="hidden" value="manual"> -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Toolbar-->
+                    <div class="grid-products grid--view-items">
+                        <div class="row">
+                            <% products.forEach((row,index) =>{ %>
+                                <% if(row.isAvailable === true){ %>
+                            <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+                                <!-- start product image -->
+                                <div class="product-image">
+                                    <!-- start product image -->
+                                    <a href="#">
+                                        <!-- image -->
+                                        <img class="primary blur-up lazyload" data-src="/img/<%= row.images[0] %>" src="/img/<%= row.images[0] %>" alt="image" title="product">
+                                        <!-- End image -->
+                                        <!-- Hover image -->
+                                        <img class="hover blur-up lazyload" data-src="/img/<%= row.images[1] %>" src="/img/<%= row.images[1] %>" alt="image" title="product">
+                                        <!-- End hover image -->
+                                    </a>
+                                    <!-- end product image -->
+                                    <!-- Start product button -->
+                                    <form class="variants add" action="#" onclick="window.location.href='cart.html'"method="post">
+                                        <a href="/addtoCart/<%= row._id %>"><button class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</button></a> 
+                                    </form>
+                                    <div class="button-set">
+                                        <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview<%= index %>">
+                                            <i class="icon anm anm-search-plus-r"></i>
+                                        </a>
+                                        <div class="wishlist-btn">
+                                            <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist">
+                                                <i class="icon anm anm-heart-l"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- end product button -->
+                                </div>
+                                <div class="product-details text-center">
+                                    <!-- product name -->
+                                    <div class="product-name">
+                                        <a href="/productdetails/<%= row._id %>"><%= row.name %></a>
+                                    </div>
+                                    <!-- End product name -->
+                                    <!-- product price -->
+                                    <div class="product-price">
+                                        <span class="price">₹ <%= row.price %></span>
+                                    </div>
+                                    <!-- End product price -->
+                                    <!-- Color Variant -->
+                                    <!-- <ul class="swatches">
+                                        <li class="swatch small rounded navy" rel="/user/images/product-/images/product-image-stw1.jpg"></li>
+                                        <li class="swatch small rounded green" rel="/user/images/product-/images/product-image-stw1-1.jpg"></li>
+                                        <li class="swatch small rounded gray" rel="/user/images/product-/images/product-image-stw1-2.jpg"></li>
+                                        <li class="swatch small rounded aqua" rel="/user/images/product-/images/product-image-stw1-3.jpg"></li>
+                                        <li class="swatch small rounded orange" rel="/user/images/product-/images/product-image-stw1-4.jpg"></li>
+                                    </ul> -->
+                                    <!-- End Variant -->
+                                </div>
+                                <!-- end product image -->
+                            <div class="modal fade quick-view-popup" id="content_quickview<%= index %>">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div id="ProductSection-product-template" class="product-template__container prstyle1">
+                                        <div class="product-single">
+                                        <!-- Start model close -->
+                                        <a href="javascript:void()" data-dismiss="modal" class="model-close-btn pull-right" title="close"><span class="icon icon anm anm-times-l"></span></a>
+                                        <!-- End model close -->
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="product-details-img">
+                                                    <div class="pl-20">
+                                                        <img src="/img/<%= row.images[0] %>" alt="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="product-single__meta">
+                                                        <h2 class="product-single__title">PRODUCT DETAILS</h2>
+                                                        <div class="prInfoRow">
+                                                            <!-- <div class="product-stock"> <span class="instock ">In Stock</span> <span class="outstock hide">Unavailable</span> </div> -->
+                                                            <div class="product-sku"><span class="variant-sku"><a href="/productdetails/<%= row._id %>"><%= row.name %></a></span></div>
+                                                        </div>
+                                                        <p class="product-single__price product-single__price-product-template">
+                                                            <span class="visually-hidden">Regular price</span>
+                                                            <!-- <s id="ComparePrice-product-template"><span class="money">₹ <%= row.price %></span></s> -->
+                                                            <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                                                                <span id="ProductPrice-product-template"><span class="money">₹ <%= row.price %></span></span>
+                                                            </span>
+                                                        </p>
+                                                        <div class="product-single__description rte"><%= row.description %></div>
+                                                        </div>
+                                                    <form method="post" action="http://annimexweb.com/cart/add" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
+                                                        
+                                                       
+                                                        <!-- Product Action -->
+                                                        <div class="product-action clearfix">
+                                                            <!-- <div class="product-form__item--quantity">
+                                                                <div class="wrapQtyBtn">
+                                                                    <div class="qtyField">
+                                                                        <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                                        <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                                        <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                 -->
+                                                            <div class="product-form__item--submit">
+                                                                <form class="variants add" action="#" onclick="window.location.href='cart.html'"method="post">
+                                                                    <a href="/addtoCart/<%= row._id %>"><button class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</button></a> 
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Product Action -->
+                                                    </form>
+                                                    <div class="display-table shareRow">
+                                                        <div class="display-table-cell">
+                                                            <div class="wishlist-btn">
+                                                                <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist"><i class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to Wishlist</span></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                    </div>
+                                        <!--End-product-single-->
+                                        </div>
+                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    <% })%>
+                </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-include('footer')-%>

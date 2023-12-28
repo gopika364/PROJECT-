@@ -1,17 +1,12 @@
+
 const mongoose = require('../database/dbConnect');
 
-const registerSchema = new mongoose.Schema({
+const register = new mongoose.Schema({
     name:
-    [{
-        firstName:{
-            type:String,
-            required:true
-        },
-        lastName:{
-            type:String,
-            required:true
-        }
-    }],
+    {
+        type:String,
+        required:true
+    },
     email:{
         type:String,
         required:true
@@ -19,9 +14,46 @@ const registerSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    otp:{
+    type:Number
+    },
+    isBlock:{
+        default:false,
+        type:Boolean
+    },
+    walletBalance: {
+        type: Number,
+        default: 0
+    },
+    usedcoupons:[{
+        couponid:{
+            type: String
+        }
+    }],
+    address: [{
+        address1:{
+            type: String
+        },
+        city:{
+            type: String
+        },
+        state:{
+            type: String
+        },
+        postCode:{
+            type: String
+        },
+        name:{
+            type:String
+        },
+        mobile:{
+            type:Number
+        }
+    }],
+  
 });
 
-const register = new mongoose.model('userregister',registerSchema);
+const registercollection = new mongoose.model('userregister',register);
 
-module.exports = register;
+module.exports = registercollection;

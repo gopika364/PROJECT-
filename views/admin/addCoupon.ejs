@@ -1,0 +1,125 @@
+<%- include('header') -%>
+
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div style="width: 100%;" class="col-sm-12 col-xl-6">
+      <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">ADD COUPON</h6>
+
+        <% if (message) { %>
+          <div class="alert alert-<%= message.type %> alert-dismissible fade show" role="alert" id="alert">
+            <strong><%= message.message %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% } %>
+
+        <form class="mt-5" method="post" action="/admin/addCoupon" id="couponForm">
+          <div class="mb-3">
+            <label for="code" class="form-label">Code</label>
+            <input name="code" type="text" class="form-control" id="code" >
+            <small class="text-muted" id="codeError" style="color: red;"></small>
+          </div>
+          <div class="mb-3">
+            <label for="discount" class="form-label">Discount</label>
+            <input placeholder="100%" max="100" min="0" name="discount" type="number" class="form-control" id="discount" >
+            <small class="text-muted" id="discountError" style="color: red;"></small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="minValue">Min Value</label>
+            <input min="0" name="minValue" type="number" class="form-control" id="minValue">
+            <small class="text-muted" id="minValueError" style="color: red;"></small>
+          </div>
+          <div class="mb-3">
+            <label for="expiryDate" class="form-label">Expiry Date</label>
+            <input name="expiryDate" type="date" class="form-control" id="expiryDate" >
+            <small id="expiryDateError" style="color: red;"></small>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input name="description" type="text" class="form-control" id="description" >
+            <small class="text-muted" id="descriptionError" style="color: red;"></small>
+          </div>
+          
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-primary" type="submit">ADD COUPON</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('couponForm');
+
+    form.addEventListener('submit', function (event) {
+      let isValid = true;
+
+      // Code Validation
+      const codeInput = form.querySelector('[name="code"]');
+      if (!/^[a-zA-Z0-9]+$/.test(codeInput.value) || /\s/.test(codeInput.value)) {
+        displayValidationError(codeInput, 'Alphanumeric characters only, no spaces allowed', 'codeError');
+        isValid = false;
+      } else {
+        clearValidationError(codeInput, 'codeError');
+      }
+
+      // Discount Validation
+      const discountInput = form.querySelector('[name="discount"]');
+      if (isNaN(discountInput.value) || discountInput.value < 0 || discountInput.value > 100) {
+        displayValidationError(discountInput, 'Numeric value between 0 and 100 only', 'discountError');
+        isValid = false;
+      } else {
+        clearValidationError(discountInput, 'discountError');
+      }
+
+      // MinValue Validation
+      const minValueInput = form.querySelector('[name="minValue"]');
+      if (isNaN(minValueInput.value) || minValueInput.value < 0) {
+        displayValidationError(minValueInput, 'Numeric value greater than or equal to 0 only', 'minValueError');
+        isValid = false;
+      } else {
+        clearValidationError(minValueInput, 'minValueError');
+      }
+
+      // ExpiryDate Validation
+      const expiryDateInput = form.querySelector('[name="expiryDate"]');
+      const currentDate = new Date();
+      const selectedDate = new Date(expiryDateInput.value);
+      if (selectedDate <= currentDate) {
+        displayValidationError(expiryDateInput, 'Expiry date must be in the future', 'expiryDateError');
+        isValid = false;
+      } else {
+        clearValidationError(expiryDateInput, 'expiryDateError');
+      }
+
+      // Description Validation
+      const descriptionInput = form.querySelector('[name="description"]');
+      if (/\s/.test(descriptionInput.value)) {
+        displayValidationError(descriptionInput, 'No spaces allowed', 'descriptionError');
+        isValid = false;
+      } else {
+        clearValidationError(descriptionInput, 'descriptionError');
+      }
+
+      if (!isValid) {
+        event.preventDefault(); // Prevent form submission if there are validation errors
+      }
+    });
+
+    function displayValidationError(input, message, errorId) {
+      const small = form.querySelector(`#${errorId}`);
+      small.textContent = message;
+      small.style.color = 'red'; // Set the error message color to red
+    }
+
+    function clearValidationError(input, errorId) {
+      const small = form.querySelector(`#${errorId}`);
+      small.textContent = '';
+      small.style.color = ''; // Clear the error message color
+    }
+  });
+</script>
+
+<%- include('footer') -%>

@@ -8,6 +8,7 @@
 <title>BELLE</title>
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!-- Favicon -->
 <link rel="shortcut icon" href="/user/images/favicon.png" />
 <!-- Plugins CSS -->
@@ -17,7 +18,14 @@
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="/user/css/style.css">
 <link rel="stylesheet" href="/user/css/responsive.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-REPLACE_WITH_YOUR_INTEGRITY_CHECK" crossorigin="anonymous" />
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
 </head>
+<div id="pre-loader"><img src="/user/images/loader.gif" alt="">
+     
+</div>
 <body class="page-template belle">
 <div class="pageWrapper">
 	<!--Search Form Drawer-->
@@ -36,8 +44,6 @@
         <div class="container-fluid">
             <div class="row">
             	<div class="col-10 col-sm-8 col-md-5 col-lg-4">
-                    
-                   
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
                 	<div class="text-center"><p class="top-header_middle-text"> Worldwide Express Shipping</p></div>
@@ -45,10 +51,18 @@
                 <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
                 	<span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
                     <ul class="customer-links list-inline">
-                        <li><a href="/login">Login</a></li>
-                        <li><a href="/register">Create Account</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <% if (user) { %>
+                            <li><h3 style="color: white;"><%= user.name %></h3></li>
+                            <li><a href="/wishList">Wishlist</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                           <a href="/userProfile"><i style="font-size: 24px; margin-left: 15px;" class="fa fa-user-circle"></i></a>
+                        <% } else { %>
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Create Account</a></li>
+                        <% } %>
                     </ul>
+                    
+                    
                 </div>
             </div>
         </div>
@@ -60,8 +74,8 @@
             <div class="row align-items-center">
             	<!--Desktop Logo-->
                 <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
-                    <a href="index.html">
-                    	<img src="user/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
+                    <a href="/">
+                    	<img src="/user/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
                     </a>
                 </div>
                 <!--End Desktop Logo-->
@@ -75,9 +89,9 @@
                 	<!--Desktop Menu-->
                 	<nav class="grid__item" id="AccessibleNav" role="navigation"><!-- for mobile -->
                         <ul id="siteNav" class="site-nav medium center hidearrow">
-                            <li class="lvl1 parent megamenu"><a href="#">Home <i class="anm anm-angle-down-l"></i></a>    
+                            <li class="lvl1 parent megamenu"><a href="/">Home <i class="anm anm-angle-down-l"></i></a>    
                             </li>
-                            <li class="lvl1 parent megamenu"><a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
+                            <li class="lvl1 parent megamenu"><a href="/shop">Shop <i class="anm anm-angle-down-l"></i></a>
                             </li>
                         </ul>
                     </nav>
@@ -86,79 +100,17 @@
                 <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
                 	<div class="logo">
                         <a href="index.html">
-                            <img src="user/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
+                            <img src="/user/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
                         </a>
                     </div>
                 </div>
                 <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                 	<div class="site-cart">
-                    	<a href="#;" class="site-header__cart" title="Cart">
-                        	<i class="icon anm anm-bag-l"></i>
-                            <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">2</span>
+                    	<a href="/cart" title="Cart">
+                        	<i style="font-size: 24px;" class="icon anm anm-bag-l"></i>
+                            <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count"><%= cart.length %></span>
                         </a>
-                        <!--Minicart Popup-->
-                        <div id="header-cart" class="block block-cart">
-                        	<ul class="mini-products-list">
-                                <li class="item">
-                                	<a class="product-image" href="#">
-                                    	<img src="/images/product-images/cape-dress-1.jpg" alt="3/4 Sleeve Kimono Dress" title="" />
-                                    </a>
-                                    <div class="product-details">
-                                    	<a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
-                                        <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
-                                        <div class="variant-cart">Black / XL</div>
-                                        <div class="wrapQtyBtn">
-                                            <div class="qtyField">
-                                            	<span class="label">Qty:</span>
-                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
-                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="priceRow">
-                                        	<div class="product-price">
-                                            	<span class="money">$59.00</span>
-                                            </div>
-                                         </div>
-									</div>
-                                </li>
-                                <li class="item">
-                                	<a class="product-image" href="#">
-                                    	<img src="/images/product-images/cape-dress-2.jpg" alt="Elastic Waist Dress - Black / Small" title="" />
-                                    </a>
-                                    <div class="product-details">
-                                    	<a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
-                                        <a class="pName" href="cart.html">Elastic Waist Dress</a>
-                                        <div class="variant-cart">Gray / XXL</div>
-                                        <div class="wrapQtyBtn">
-                                            <div class="qtyField">
-                                            	<span class="label">Qty:</span>
-                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
-                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                       	<div class="priceRow">
-                                            <div class="product-price">
-                                                <span class="money">$99.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="total">
-                            	<div class="total-in">
-                                	<span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
-                                </div>
-                                 <div class="buttonSet text-center">
-                                    <a href="cart.html" class="btn btn-secondary btn--small">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--End Minicart Popup-->
+
                     </div>
                     <div class="site-header__search">
                     	<button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
@@ -184,4 +136,5 @@
         </li> 	
       </ul>
 	</div>
+    
 	<!--End Mobile Menu-->
