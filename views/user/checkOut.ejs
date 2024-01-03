@@ -132,7 +132,7 @@
                         <div id="coupon" class="coupon-dec tab-pane active">
                             <label class="required get" for="coupon-code" >
                             </label>
-                            <input placeholder="enter coupon code" id="coupon-code" required="" type="text" class="mb-3">     
+                            <input  placeholder="enter coupon code" id="coupon-code" required="" type="text" class="mb-3">     
 
                             <section style="color: red;" id="cpn"></section>
 
@@ -190,11 +190,17 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label" for="flexRadioDefault1">
-                                <h3>Online Payment</h3>
+                                <h3>ONLINE PAYMENT</h3>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                <h3>WALLET PAYMENT</h3>
                             </label>
                         </div>
                         <div class="order-button-payment">
-                            <button class="btn" value="Place order" id="place-order" type="submit" style="font-size: 14px; padding: 8px 16px;">PLACE ORDER</button>
+                            <button class="btn" value="Place order" id="place-order" type="submit" style="font-size: 14px; padding: 8px 16px;"></button>
                         </div>
                            
                     </div>
@@ -205,7 +211,7 @@
 </div>
 <!--End Body Content-->
 
-<!-- -------------------------clear coupen begin--------------------- -->
+<!--clear-->
 
 <script>
     document.getElementById('clear').addEventListener('click',()=>{
@@ -348,12 +354,19 @@
                 const selectedPaymentMethod = document.querySelector('input[name="flexRadioDefault"]:checked');
                 const paymentMethod = selectedPaymentMethod ? selectedPaymentMethod.nextElementSibling.textContent.trim() : null;
                 const userEmail = document.getElementById('userEmail').value;
+                const grandTotal = document.getElementById('grandTotal').innerHTML.trim();
+
+
                 const data = {
                     address: selectedAddress,
                     orderItems,
                     paymentMethod: paymentMethod,
                     userEmail : userEmail,
+                    grandTotal : grandTotal
                 };
+
+                const couponCode = document.getElementById('coupon-code').value;
+                
     
                 if (paymentMethod === 'COD' && selectedAddress != null) {
                     try {
@@ -362,7 +375,7 @@
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify(data),
+                            body: JSON.stringify({data,couponCode}),
                         });
         
                         const result = await response.json();
@@ -378,7 +391,7 @@
 
                 }else if(paymentMethod === 'Online Payment' && selectedAddress != null) {
                     const url = '/onlinePayment'
-                    let totalamount = document.getElementById('total').innerHTML;
+                    let totalamount = document.getElementById('grandTotal').innerHTML.trim();
 
                     fetch(url,{
                         method : 'post',
@@ -398,7 +411,9 @@
                         "description": "Test Transaction",
                         "image": "",
                         "order_id": data1.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                        "callback_url": `/paymentSuccess?data=${JSON.stringify(data)}`,
+                        "callback_url": `/paymentSuccess?data=${JSON.stringify(data)}&couponCode=${JSON.stringify(couponCode)}`,
+                        // "callback_url": `/paymentSuccess?data=${encodeURIComponent(JSON.stringify(data))}&couponCode=${encodeURIComponent(couponCode)}`,
+
                         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
                             // "name": "Gaurav Kumar", //your customer's name
                             // "email": "",

@@ -89,13 +89,11 @@ const postChangePassword = async(req,res) => {
       const hashedPassword = await bcrypt.hash(password2, 10);
       await registercollection.findOneAndUpdate({ email: req.session.user }, { $set: { password: hashedPassword } });
       req.session.message = {
-        message: 'Password Updated',
+        message: 'Password Updated and logged out',
         type: 'success'
     }
-      res.redirect('/changePassword');
+      res.redirect('/logout');
     }
-    
-
   })
 }
 

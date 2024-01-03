@@ -94,64 +94,70 @@
                             <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right">₹ <span class="money" id="grandTotal"><%= grandTotal1 %></span></span>
                           </div>
                           <p class="cart_tearm">
+                            <% if(cart.length > 0) { %>
+                                <a href="/checkOut" class="btn btn--small-wide checkout" id="cartCheckout" disabled="disabled">Proceed To Checkout</a>
+                           <% } %>
                           </p>
-                          <a href="/checkOut" class="btn btn--small-wide checkout" id="cartCheckout" disabled="disabled">Proceed To Checkout</a>
                         </div>
-                    <!-- </div>
-                        <button type="button" id="demo">demo</button>
-                        <div id="msg">
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    function updateQuantity(productId, action) {
-        const quantityInput = document.getElementById(`qty-${productId}`);
-        let quantity = parseInt(quantityInput.value, 10);
-
-        if (action === 'increase') {
-            quantity++;
-        } else if (action === 'decrease' && quantity > 1) {
-            quantity--;
-        }
-
-        quantityInput.value = quantity;
-     
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <p>
+            <%if(cart.length <= 0) { %>
+                <a href="/" class="btn btn--has-icon-after">Continue shopping <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                <% } %>
+            </p>
+    </div>
 
 
-        fetch('/updateCartItem', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                productId: productId,
-                action: action,
-                quantity: quantity,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.message == "Out of Stock"){
-                document.getElementById(`outofstock_${productId}`).innerHTML = 'Out of stock'
-                document.getElementById(`plus_${productId}`).style.display = "none";
-            }else{
-                document.getElementById(`outofstock_${productId}`).innerHTML = ''
-                document.getElementById(`plus_${productId}`).style.display = "block";
-                document.getElementById(`totalPrice_${productId}`).innerHTML = data.updatedPrice
-                document.getElementById('total').innerHTML = data.updatedGrandTotal;
-                document.getElementById('grandTotal').innerHTML = data.updatedGrandTotal;
-            }
+            <script>
+                function updateQuantity(productId, action) {
+                    const quantityInput = document.getElementById(`qty-${productId}`);
+                    let quantity = parseInt(quantityInput.value, 10);
 
-        })
-        .catch(error => {
-            console.error('Error updating quantity:', error);
-        });
-    }
-</script>
+                    if (action === 'increase') {
+                        quantity++;
+                    } else if (action === 'decrease' && quantity > 1) {
+                        quantity--;
+                    }
+
+                    quantityInput.value = quantity;
+                
+
+
+                    fetch('/updateCartItem', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            productId: productId,
+                            action: action,
+                            quantity: quantity,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.message == "Out of Stock"){
+                            document.getElementById(`outofstock_${productId}`).innerHTML = 'Out of stock'
+                            document.getElementById(`plus_${productId}`).style.display = "none";
+                        }else{
+                            document.getElementById(`outofstock_${productId}`).innerHTML = ''
+                            document.getElementById(`plus_${productId}`).style.display = "block";
+                            document.getElementById(`totalPrice_${productId}`).innerHTML = data.updatedPrice
+                            document.getElementById('total').innerHTML = data.updatedGrandTotal;
+                            document.getElementById('grandTotal').innerHTML = data.updatedGrandTotal;
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error('Error updating quantity:', error);
+                    });
+                }
+            </script>
 
 
 

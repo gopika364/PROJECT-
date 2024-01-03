@@ -59,29 +59,29 @@
                     </div> -->
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="/admin/home" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>DASHBOARD</a>
+                    <a href="/admin/home" class="nav-item nav-link <%= status == 'dashboard' ? 'active' : '' %>"><i class="fa fa-tachometer-alt me-2"></i>DASHBOARD</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>PRODUCT</a>
+                        <a href="#" class="nav-link dropdown-toggle <%= status == 'addProduct' || status == 'productList' ? 'active' : '' %>" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>PRODUCT</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="/admin/addProduct" class="dropdown-item">ADD PRODUCT</a>
-                            <a href="/admin/productlist" class="dropdown-item">PRODUCT LIST</a>
+                            <a href="/admin/addProduct" class="dropdown-item <%= status == 'addProduct' ? 'active' : '' %>">ADD PRODUCT</a>
+                            <a href="/admin/productlist" class="dropdown-item <%= status == 'productList' ? 'active' : '' %>">PRODUCT LIST</a>
                         </div>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>CATEGORY</a>
+                            <a href="#" class="nav-link dropdown-toggle <%= status == 'addcategory' || status == 'categoryList' ? 'active' : '' %>" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>CATEGORY</a>
                             <div class="dropdown-menu bg-transparent border-0">
-                                <a href="/admin/addcategory" class="dropdown-item">ADD CATEGORY</a>
-                                <a href="/admin/categoryList" class="dropdown-item">CATEGORY LIST</a>
+                                <a href="/admin/addcategory" class="dropdown-item <%= status == 'addcategory' ? 'active' : '' %>">ADD CATEGORY</a>
+                                <a href="/admin/categoryList" class="dropdown-item <%= status == 'categoryList' ? 'active' : '' %>">CATEGORY LIST</a>
                             </div>
                         </div>
                     </div>
-                    <a href="/admin/userlist" class="nav-item nav-link"><i class="fa fa-th me-2"></i>USER</a>
-                    <a href="/admin/orderDetails" class="nav-item nav-link"><i class="fa fa-th me-2"></i>ORDERS</a>
-                    <a href="/admin/returnList" class="nav-item nav-link"><i class="fa fa-th me-2"></i>RETURN</a>
+                    <a href="/admin/userlist" class="nav-item nav-link <%= status == 'user' ? 'active' : '' %>"><i class="fa fa-th me-2"></i>USER</a>
+                    <a href="/admin/orderDetails" class="nav-item nav-link nav-item nav-link <%= status == 'orderDetails' ? 'active' : '' %>"><i class="fa fa-th me-2"></i>ORDERS</a>
+                    <a href="/admin/returnList" class="nav-item nav-link nav-item nav-link <%= status == 'returnList' ? 'active' : '' %>"><i class="fa fa-th me-2"></i>RETURN</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>COUPON</a>
+                        <a href="#" class="nav-link dropdown-toggle <%= status == 'listCoupon' || status == 'addCoupon' ? 'active' : '' %>" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>COUPON</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="/admin/listCoupon" class="dropdown-item">LIST COUPONS</a>
-                            <a href="/admin/addCoupon" class="dropdown-item">ADD COUPON</a>
+                            <a href="/admin/listCoupon" class="dropdown-item <%= status == 'listCoupon' ? 'active' : '' %>">LIST COUPONS</a>
+                            <a href="/admin/addCoupon" class="dropdown-item <%= status == 'addCoupon' ? 'active' : '' %>">ADD COUPON</a>
                         </div>
                     </div>
 

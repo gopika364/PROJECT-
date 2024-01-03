@@ -2,15 +2,15 @@
 
 <div id="ProductSection-product-template" class="product-template__container prstyle1 container">
     <!--product-single-->
-    <div class="product-single">
+    <div  class="product-single">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                <div class="product-details-img">
+                <div class="product-details-img" style="width: 400px; height: 400px;" >
                     <div class="product-thumb">
                         <div id="gallery" class="product-dec-slider-2 product-tab-left">
 
                             <a data-image="/img/<%= productData.images[0] %>" data-zoom-image="/img/<%= productData.images[0] %>" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
-                                <img class="blur-up lazyload" data-src="/img/<%= productData.images[0] %>" src="/img/<%= productData.images[0] %>" alt="" />
+                                <img class="blur-up lazyload" data-src="/img/<%= productData.images[0] %>" src="/img/<%= productData.images[0] %>" alt=""  />
                              </a>
                              <a data-image="/img/<%= productData.images[1] %>" data-zoom-image="/img/<%= productData.images[1] %>" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
                                 <img class="blur-up lazyload" data-src="/img/<%= productData.images[1] %>" src="/img/<%= productData.images[1] %>" alt="" />
@@ -142,21 +142,21 @@
                                 <form class="variants add" action="#" onclick="window.location.href='cart.html'"method="post">
                                     <a href="/addtoCart/<%= productData._id %>"><button class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</button></a> 
                                 </form>
-                                <!-- <button type="button" name="add" class="btn product-form__cart-submit">
-                                    <span>Add to cart</span>
-                                </button> -->
+                                <div style="margin-top: 10px;" class="shopify-payment-button" data-shopify="payment-button">
+                                    <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded"> <i class="icon anm anm-heart-l" aria-hidden="true"></i>ADD TO WISHLIST</button>
+                                </div>
                             </div>
-                            <div class="shopify-payment-button" data-shopify="payment-button">
+                            <!-- <div class="shopify-payment-button" data-shopify="payment-button">
                                 <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- End Product Action -->
                     </form>
                     <div class="display-table shareRow">
                             <div class="display-table-cell medium-up--one-third">
-                                <div class="wishlist-btn">
+                                <!-- <div class="wishlist-btn">
                                     <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist"><i class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to Wishlist</span></a>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="display-table-cell text-right">
                                 <!-- <div class="social-sharing">
@@ -178,6 +178,7 @@
                                  </div> -->
                             </div>
                         </div>
+                    </div>
 <!--                         
                     <p id="freeShipMsg" class="freeShipMsg" data-price="199"><i class="fa fa-truck" aria-hidden="true"></i> GETTING CLOSER! ONLY <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">$199.00</span></b> AWAY FROM <b>FREE SHIPPING!</b></p>
                     <p class="shippingMsg"><i class="fa fa-clock-o" aria-hidden="true"></i> ESTIMATED DELIVERY BETWEEN <b id="fromDate">Wed. May 1</b> and <b id="toDate">Tue. May 7</b>.</p>

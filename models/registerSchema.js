@@ -26,10 +26,25 @@ const register = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    usedcoupons:[{
-        couponid:{
+    refund:[{
+        price:{
+            type: Number
+        },
+        orderId:{
             type: String
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        },
+        status: {
+            type: String,
         }
+    }],
+    usedcoupons:[{
+        couponName:{
+            type: String
+        },
     }],
     address: [{
         address1:{
@@ -49,6 +64,10 @@ const register = new mongoose.Schema({
         },
         mobile:{
             type:Number
+        },
+        isDefault:{
+            type:Boolean,
+            default:false
         }
     }],
   

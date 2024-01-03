@@ -11,35 +11,35 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         <% } %>
-<form class="mt-5" method="post" action="/admin/addProduct" enctype="multipart/form-data" onsubmit="return validateForm()" novalidate>
+          <form id="addProduct" class="mt-5" method="post" action="/admin/addProduct" enctype="multipart/form-data" >
           <!-- Product Name -->
           <div class="mb-3">
             <label for="UrunAdi" class="form-label">Product Name</label>
-            <input name="productname" type="text" class="form-control" id="UrunAdi" >
+            <input name="productname" type="text" class="form-control" id="productName" >
             <small id="productNameError" style="color: red;"></small>
           </div>
           <!-- Stock Quantity -->
           <div class="mb-3">
             <label class="form-label" for="UrunMiktar">Stock Quantity</label>
-            <input min="1" name="stockquantity" type="number" class="form-control" id="UrunMiktar" >
+            <input min="1" name="stockquantity" type="number" class="form-control" id="stockQantity" >
             <small id="stockQuantityError" style="color: red;"></small>
           </div>
           <!-- Price -->
           <div class="mb-3">
             <label for="UrunFiyat" class="form-label">Price</label>
-            <input min="1" name="price" type="number" class="form-control" id="UrunFiyat" required>
+            <input min="1" name="price" type="number" class="form-control" id="productPrice" >
             <small id="priceError" style="color: red;"></small>
           </div>
           <!-- Description -->
           <div class="mb-3">
             <label for="UrunAciklama" class="form-label">Description</label>
-            <input name="description" type="text" class="form-control" id="UrunAciklama" required>
+            <input name="description" type="text" class="form-control" id="productDescription" >
             <small id="descriptionError" style="color: red;"></small>
           </div>
           <!-- Product Category -->
           <div class="mb-3">
             <label for="Kategori" class="form-label">Product Category</label>
-            <select name="productcategory" id="Kategori" class="ms-1 d-block w-100" required>
+            <select name="productcategory" id="productCategory" class="ms-1 d-block w-100" >
               <% category.forEach((row) => { %>
                 <% if(row.isAvailable == true){ %> 
                   <option value="<%= row.category %>"><%= row.category %></option>
@@ -51,11 +51,11 @@
           <!-- Product Image -->
           <div class="mb-3">
             <label for="UrunImage" class="form-label">Product Image</label>
-            <input name="productimage" accept="image/*" type="file" multiple class="form-control" name="UrunImage" id="UrunImage" onchange="validateFile()">
+            <input name="productimage" accept="image/*" type="file" multiple class="form-control" name="UrunImage" id="productImage">
             <div id="error" style="color: red;"></div>
           </div>
           <div class="d-flex justify-content-center">
-            <button class="btn btn-primary" type="submit">ADD PRODUCT</button>
+            <button class="btn btn-primary" type="submit" id="button" >ADD PRODUCT</button>
           </div>
         </form>
       </div>
@@ -63,10 +63,56 @@
   </div>
 </div>
 
+
 <script>
-  function validateFile() {
-    const input = document.getElementById('UrunImage');
+  document.getElementById('button').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    document.getElementById('error').innerHTML = '';
+    
+    const productName = document.getElementById('productName').value.trim();
+    if(productName === '') {
+      document.getElementById('productNameError').innerHTML = 'Enter Product Name';
+      return ;
+    }
+
+    const stockQuantity = document.getElementById('stockQantity').value.trim();
+    if(stockQuantity === '') {
+      document.getElementById('productNameError').innerHTML ='';
+      document.getElementById('stockQuantityError').innerHTML = 'Enter Quantity';
+      return ;
+    }
+
+    const productPrice = document.getElementById('productPrice').value.trim();
+    if(productPrice === '') {
+      document.getElementById('stockQuantityError').innerHTML = '';
+      document.getElementById('priceError').innerHTML = 'Enter Price';
+      return ;
+    }
+
+    const description = document.getElementById('productDescription').value.trim();
+    if(description === '') {
+      document.getElementById('priceError').innerHTML = '';
+      document.getElementById('descriptionError').innerHTML = 'Enter Description';
+      return ;
+    }
+
+    const productcategory = document.getElementById('productCategory').value.trim();
+    if(productcategory === '') {
+      document.getElementById('descriptionError').innerHTML = '';
+      document.getElementById('categoryError').innerHTML = 'Choose Category';
+      return ;
+    }
+
+    const input = document.getElementById('productImage');
     const files = input.files;
+
+    if (files.length === 0) {
+        document.getElementById('error').innerHTML = 'Image is required';
+        return;
+    } else {
+        document.getElementById('error').innerHTML = '';
+    }
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -74,56 +120,14 @@
 
       if (!fileType.startsWith('image/')) {
         document.getElementById('error').innerHTML = 'Invalid file type. Please upload only images.';
-        input.value = ''; // Clear the input to prevent submission
+        input.value = ''
         return false;
       }
     }
 
-  function validateForm() {
-    // Custom validation for Product Name
-    const productName = document.getElementById('UrunAdi').value;
-    if (productName.trim() === '') {
-      document.getElementById('productNameError').innerHTML = 'Product Name is required.';
-      return false;
-    }
+    document.getElementById('addProduct').submit();
 
-    // Custom validation for Stock Quantity
-    const stockQuantity = document.getElementById('UrunMiktar').value;
-    if (isNaN(stockQuantity) || stockQuantity < 1) {
-      document.getElementById('stockQuantityError').innerHTML = 'Stock Quantity must be a positive number.';
-      return false;
-    }
-
-    // Custom validation for Price
-    const price = document.getElementById('UrunFiyat').value;
-    if (isNaN(price) || price < 1) {
-      document.getElementById('priceError').innerHTML = 'Price must be a positive number.';
-      return false;
-    }
-
-    // Custom validation for Description
-    const description = document.getElementById('UrunAciklama').value;
-    if (description.trim() === '') {
-      document.getElementById('descriptionError').innerHTML = 'Description is required.';
-      return false;
-    }
-
-    // Custom validation for Product Category
-    const productCategory = document.getElementById('Kategori').value;
-    if (productCategory.trim() === '') {
-      document.getElementById('categoryError').innerHTML = 'Product Category is required.';
-      return false;
-    }
-
-    // File validation (using the existing validateFile function)
-    if (!validateFile()) {
-      return false;
-    }
-
-    // If all validations pass, return true to submit the form
-    return true;
-  }
-}
+  })
 </script>
 
 <%-include('footer')-%>

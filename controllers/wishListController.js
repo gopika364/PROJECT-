@@ -19,7 +19,7 @@ const wishList = async (req, res) => {
 };
 
 
-//add
+//addtoWishList
 
 const addToWishlist = async (req, res) => {
     try {

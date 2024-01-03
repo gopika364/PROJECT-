@@ -55,6 +55,8 @@ const addAddress = async(req,res) => {
         name: req.body.name,
         mobile: req.body.mobile,
     }
+
+    
     await registercollection.updateOne(
         { email: req.session.user },
         { $push: { address: address } }
@@ -64,8 +66,14 @@ const addAddress = async(req,res) => {
 
 //COD
 const cashOnDelivery = async(req,res) =>{
-    const orderData = req.body;
-    await orderCollection.insertMany([orderData]);
+    // const {orderData,couponCode} = req.body;
+    const data = req.body.data;
+    const couponCode = req.body.couponCode;
+
+if (couponCode.length > 0) {
+  await registercollection.findOneAndUpdate({ email: req.session.user }, { $push: { usedcoupons: { couponName: couponCode } } });
+}
+    await orderCollection.insertMany([data]);
     await cartCollection.deleteMany({ userEmail: req.session.user });
     return res.status(200).json({message:'success'});
 }
@@ -87,8 +95,14 @@ const razorPayOrderCreate = async (req,res) => {
     })
 }
 
+
+
 const razorPaySuccess = async(req,res) =>{
     const orderData = JSON.parse(req.query.data); 
+    const couponCode =JSON.parse(req.query.couponCode);
+    if (couponCode.length > 0) {
+        await registercollection.findOneAndUpdate({ email: req.session.user }, { $push: { usedcoupons: { couponName: couponCode } } });
+      }
     await orderCollection.insertMany([orderData]);
     await cartCollection.deleteMany({ userEmail: req.session.user });
     res.redirect('/orderConfirmed')

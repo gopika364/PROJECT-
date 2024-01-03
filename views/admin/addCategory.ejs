@@ -13,10 +13,11 @@
                 <% } %>   
                 <div style="color: red;" id="err"></div>
 
-                <form method="post" action="/admin/addcategory" class="mt-5" onsubmit="return validateForm()">
+                <form  method="post" action="/admin/addcategory" id="category" class="mt-5">
                     <div class="mb-3">
                         <label for="Kategori" class="form-label">Category</label>
-                        <input name="category" type="text" class="form-control" id="UrunMiktar" required>
+                        <input name="category" type="text" class="form-control" id="addCategory">
+                        <div id="error" style="color: red;"></div>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button id="button1" class="btn btn-primary" type="submit">ADD CATEGORY</button>
@@ -30,17 +31,18 @@
 </div>
 
 <script>
-    function validateForm() {
-        var categoryValue = document.getElementById("UrunMiktar").value;
-        var trimmedValue = categoryValue.trim();
+    document.getElementById('button1').addEventListener('click',(e) => {
+        e.preventDefault();
 
-        if (trimmedValue === "") {
-            document.getElementById('err').innerHTML = 'Category cannot be only spaces. Please enter a valid category.'
-            return false; 
+        document.getElementById('error').innerHTML = '';
+
+        const category = document.getElementById('addCategory').value.trim();
+        if(category === ''){
+            document.getElementById('error').innerHTML = 'Enter Category';
+            return;
         }
-
-        return true; 
-    }
+        document.getElementById('category').submit();
+    });
 </script>
 
 <script>

@@ -13,21 +13,21 @@
           </div>
         <% } %>
 
-        <form class="mt-5" method="post" action="/admin/addCoupon" id="couponForm">
+        <form id="couponForm" class="mt-5" method="post" action="/admin/addCoupon" >
           <div class="mb-3">
             <label for="code" class="form-label">Code</label>
             <input name="code" type="text" class="form-control" id="code" >
-            <small class="text-muted" id="codeError" style="color: red;"></small>
+            <small id="codeError" style="color: red;"></small>
           </div>
           <div class="mb-3">
             <label for="discount" class="form-label">Discount</label>
             <input placeholder="100%" max="100" min="0" name="discount" type="number" class="form-control" id="discount" >
-            <small class="text-muted" id="discountError" style="color: red;"></small>
+            <small id="discountError" style="color: red;"></small>
           </div>
           <div class="mb-3">
             <label class="form-label" for="minValue">Min Value</label>
             <input min="0" name="minValue" type="number" class="form-control" id="minValue">
-            <small class="text-muted" id="minValueError" style="color: red;"></small>
+            <small  id="minValueError" style="color: red;"></small>
           </div>
           <div class="mb-3">
             <label for="expiryDate" class="form-label">Expiry Date</label>
@@ -37,11 +37,11 @@
           <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <input name="description" type="text" class="form-control" id="description" >
-            <small class="text-muted" id="descriptionError" style="color: red;"></small>
+            <small  id="descriptionError" style="color: red;"></small>
           </div>
           
           <div class="d-flex justify-content-center">
-            <button class="btn btn-primary" type="submit">ADD COUPON</button>
+            <button id="button" class="btn btn-primary" type="submit">ADD COUPON</button>
           </div>
         </form>
       </div>
@@ -50,6 +50,67 @@
 </div>
 
 <script>
+
+  //  to get the current date in the format YYYY-MM-DD
+  const currentDate = new Date().toISOString().split('T')[0];
+
+  document.getElementById('expiryDate').min = currentDate;
+</script>
+
+<script>
+
+  document.getElementById('button').addEventListener('click' , (e) => {
+    e.preventDefault();
+
+    const code = document.getElementById('code').value.trim();
+
+    if(code === '') {
+      document.getElementById('codeError').innerHTML = 'Enter code';
+      return;
+    }
+
+
+    const discount = document.getElementById('discount').value.trim();
+    if(discount === '') {
+
+      document.getElementById('codeError').innerHTML = '';
+      document.getElementById('discountError').innerHTML ='Enter the discount';
+      return;
+
+    }
+
+    const minValue = document.getElementById('minValue').value.trim();
+    if(minValue === '') {
+
+      document.getElementById('discountError').innerHTML ='';
+      document.getElementById('minValueError').innerHTML = 'Enter the minimum value';
+      return;
+
+    }
+
+    const expiryDate = document.getElementById('expiryDate').value.trim();
+    if(expiryDate === '') {
+
+      document.getElementById('minValueError').innerHTML = '';
+      document.getElementById('expiryDateError').innerHTML = 'Enter the expiry Date';
+      return;
+
+    }
+
+    const description = document.getElementById('description').value.trim();
+    if(description === '') {
+
+      document.getElementById('expiryDateError').innerHTML = '';
+      document.getElementById('descriptionError').innerHTML = 'Enter Description';
+      return;
+      
+    }
+
+    document.getElementById('couponForm').submit();
+  })
+</script>
+
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('couponForm');
 
@@ -120,6 +181,6 @@
       small.style.color = ''; // Clear the error message color
     }
   });
-</script>
+</script> -->
 
 <%- include('footer') -%>

@@ -1,10 +1,10 @@
 require('dotenv').config();
+const asyncHandler = require('express-async-handler');
 const bodyParser = require('body-parser');
 const adminloginSchema = require('../models/registerSchema')
 const product = require('../models/productSchema');
 const userSchemacollection = require('../models/userListSchema');
 const registercollection = require('../models/registerSchema');
-const asyncHandler = require('express-async-handler');
 const categoryCollection = require('../models/catergorySchema');
 const productCollection = require('../models/productSchema');
 const orderCollection = require('../models/orderSchema');
@@ -13,7 +13,8 @@ const orderCollection = require('../models/orderSchema');
 const home = (req,res)=>{
   const message = req.session.message;
   req.session.message = null;
-    res.render("admin/home",{message});
+  const status = 'dashboard'
+    res.render("admin/home",{message,status});
 }
 
 //getsignin
@@ -58,9 +59,10 @@ const signin = (req,res)=>{
 const userslist = async (req, res) => {
     try {
       // Fetch all users from the database
+      const status = 'user'
       const users = await registercollection.find();
   
-      res.render('admin/userslist', { users }); 
+      res.render('admin/userslist', { users,status }); 
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -83,10 +85,11 @@ const userslist = async (req, res) => {
 
   //getaddCategory
   const addCategory = async(req,res) => {
-    // const exist = req.query.exist;
     const message = req.session.message;
     req.session.message = null;
-    res.render('admin/addcategory',{message});
+    const status = 'addcategory';
+
+    res.render('admin/addcategory',{message,status});
   }
 
 
@@ -99,10 +102,9 @@ const userslist = async (req, res) => {
       category: originalCategory.trim().toUpperCase() // Convert to uppercase
   }
 
-  const category = originalCategory.trim().toUpperCase();
+    const category = originalCategory.trim().toUpperCase();
 
     
-    // const check = await categoryCollection.findOne({category:req.body.category},{category:1})
     const check = await categoryCollection.findOne({ category:category });
     if(check == null){
       await categoryCollection.insertMany([data])
@@ -136,8 +138,9 @@ const userslist = async (req, res) => {
   const categoryList = async(req,res) => {
     const category = await categoryCollection.find();
     const message = req.session.message;
-        req.session.message = null; 
-    res.render('admin/categoryList',{category,message});
+        req.session.message = null;
+        const status = 'categoryList' 
+    res.render('admin/categoryList',{category,message,status});
   }
 
   //editcategory
@@ -147,7 +150,8 @@ const userslist = async (req, res) => {
         const category = await categoryCollection.findById(categoryId);
         const message = req.session.message;
         req.session.message = null;
-        res.render('admin/editCategory', { category ,message});
+        const status = 'editCategory' ;
+        res.render('admin/editCategory', { category ,message,status});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -208,27 +212,28 @@ const deletecategory = async (req, res) => {
 
 
 
-//..............addProduct....................
+//addProduct
    const addProduct = async(req,res)=>{
     const category = await categoryCollection.find();
     const message = req.session.message;
     req.session.message = null;
-     res.render('admin/addProduct',{category,message});
+    const status = 'addProduct'
+     res.render('admin/addProduct',{category,message,status});
 }
 
 
-// // .................postaddProduct...........
+//postaddProduct
 
 const postaddProduct = async (req, res) => {
   try {
 
       const data = {
-        name: req.body.productname,
-        stock: req.body.stockquantity,
-        price: req.body.price,
-        description: req.body.description,
+        name: req.body.productname.trim(),
+        stock: req.body.stockquantity.trim(),
+        price: req.body.price.trim(),
+        description: req.body.description.trim(),
         images: req.files.map(file => file.filename),
-        category: req.body.productcategory
+        category: req.body.productcategory.trim()
       }
       await productCollection.insertMany([data])
       req.session.message = {
@@ -248,7 +253,9 @@ const postaddProduct = async (req, res) => {
   const product = await productCollection.find({})
   const message = req.session.message;
     req.session.message = null;
-  res.render("admin/productlist",{product,message});
+    const status = 'productList'
+
+  res.render("admin/productlist",{product,message,status});
 }
 
 //editProduct
@@ -256,13 +263,15 @@ const postaddProduct = async (req, res) => {
   const editProduct = async(req,res) => {
   try {
     const category = await categoryCollection.find();
-    const id = req.params.id
+    const id = req.params.id;
+    const status = 'editProduct';
+
     const product = await productCollection.findOne({ _id: id });
     req.session.message = {
       message : 'Product Editted',
       type : 'success',
     }
-    res.render('admin/editProduct',{ product,category})
+    res.render('admin/editProduct',{ product,category,status})
   }
   catch (err) {
       console.error('Error :', err);

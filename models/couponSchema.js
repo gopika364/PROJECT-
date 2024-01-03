@@ -4,23 +4,23 @@ const mongoose  = require('../database/dbConnect')
 const couponSchema=new mongoose.Schema({
     code: {
         type: String,
-        required: true
+        // required: true
     },
     discount: {
         type: Number,
-        required: true
+        // required: true
     },
     minValue: {
         type: Number,
-        require:true
+        // require:true
     },
     expiryDate: {
         type: String,
-        required: true
+        // required: true
     },
     description: {
         type: String,
-        required: true
+        // required: true
     }
 })
 

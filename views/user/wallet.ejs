@@ -45,7 +45,7 @@
                               <div class="card text-bg-success mb-3" style="max-width: 20rem;">
                                 <div class="card-body">
                                   <h5 class="card-title">Total Balance</h5>
-                                  <h3 class="card-text">&#x20B9;<%= user.walletBalance %></h3>
+                                  <h3 class="card-text">&#x20B9;<%=user.walletBalance %></h3>
                                 </div>
                               </div>
                                 <!-- Profile picture image-->
@@ -55,19 +55,35 @@
                         
                     </div>
                     <div class="col-xl-8">
-                      <!-- <div class="col-12">
+                      <div class="col-12">
                         <div class="card h-100 mb-4">
                           <div class="card-header pb-0 px-3">
                             <div class="row">
                               <div class="col-md-6">
                                 <h6 class="mb-2">Your Transaction's</h6>
                               </div>
-                              <div class="col-md-6 d-flex justify-content-end align-items-center">
+                              <!-- <div class="col-md-6 d-flex justify-content-end align-items-center">
                                 <i class="far fa-calendar-alt me-2"></i>
                                 <small>23 - 30 March 2020</small>
-                              </div>
+                              </div> -->
                             </div>
-                          </div> -->
+                          </div>
+                          <% user.refund.forEach((row,index) => { %>
+                            <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                              <div class="d-flex align-items-center">
+                                <button ><img src="/user/images/clipart2416467.png" width="20px" alt=""></button>
+                                <div class="d-flex flex-column">
+                                  <h6 class="mb-1 text-dark text-sm"><%= row.orderId %></h6>
+                                  <span class="text-xs"><%= row.date %></span>
+                                </div>
+                              </div>
+                              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                                + &#x20B9; <%= row.price %>
+                              </div>                
+                            </li>
+                            <hr>
+                          <% })%>
+                          
                     <!-- history -->
                         </div>
                       </div>

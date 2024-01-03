@@ -63,7 +63,7 @@
                                 <!-- start product image -->
                                 <div class="product-image">
                                     <!-- start product image -->
-                                    <a href="product-layout-1.html" class="grid-view-item__link">
+                                    <a href="/productdetails/<%= row._id %>" class="grid-view-item__link">
                                         <!-- image -->
                                         <img class="primary blur-up lazyload" data-src="/img/<%= row.images[0] %>" src="/img/<%= row.images[0] %>" alt="image" title="product">
                                         <!-- End image -->
@@ -88,9 +88,9 @@
                                         <a href="/addtoCart/<%= row._id %>"><button class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</button></a> 
                                     </form>
                                     <div class="button-set">
-                                        <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                        <!-- <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
                                             <i class="icon anm anm-search-plus-r"></i>
-                                        </a>
+                                        </a> -->
                                         <div class="wishlist-btn">
                                             <a class="wishlist add-to-wishlist" href="wishlist.html">
                                                 <i class="icon anm anm-heart-l"></i>
@@ -173,7 +173,7 @@
                             <!-- start product image -->
                             <div class="product-image">
                                 <!-- start product image -->
-                                <a href="product-layout-1.html" class="grid-view-item__link">
+                                <a href="/productdetails/<%= row._id %>" class="grid-view-item__link">
                                     <!-- image -->
                                     <img class="primary blur-up lazyload" data-src="/img/<%= row.images[0] %>" src="/img/<%= row.images[0] %>" alt="image" title="product">
                                     <!-- End image -->
@@ -201,11 +201,15 @@
                                     <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview<%= index %>">
                                         <i class="icon anm anm-search-plus-r"></i>
                                     </a>
-                                    <div class="wishlist-btn">
-                                        <a class="wishlist add-to-wishlist" href="wishlist.html">
-                                            <i class="icon anm anm-heart-l"></i>
-                                        </a>
-                                    </div>
+                                    <!-- Add this inside the loop where you render wishlist items -->
+                                    <!-- Add this inside the loop where you render wishlist items -->
+                                <td class="wishlist-btn">
+                                    <a class="wishlist add-to-wishlist" href="#" onclick="addToWishlist('<%= row._id %>', '<%= row.name %>', '<%= row.price %>', '<%= row.images[0] %>')">
+                                        <i class="icon anm anm-heart-l"></i>
+                                    </a>
+                                </td>
+
+
                                     <!-- <div class="compare-btn">
                                         <a class="compare add-to-compare" href="compare.html" title="Add to Compare">
                                             <i class="icon anm anm-random-r"></i>
@@ -331,6 +335,37 @@
     
 </div>
 <!--End Body Content-->
+
+<script>
+    function addToWishlist(productId, productName, price, image) {
+        fetch('/addToWishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                productId: productId,
+                productName: productName,
+                price: price,
+                image: image,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Item added to wishlist");
+                // You can optionally update the UI here, e.g., change the heart icon color
+            } else {
+                alert("Failed to add item to wishlist");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error occurred");
+        });
+    }
+</script>
+
 
 
 <script>

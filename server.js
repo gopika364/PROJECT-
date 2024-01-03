@@ -2,7 +2,7 @@ const express = require('express');
 
 const path = require('path');
 const db = require('./database/dbConnect');
-const session = require('express-session')
+const session = require('express-session');
 
 
 const user = require('./routes/user');

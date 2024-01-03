@@ -13,6 +13,8 @@ const cartCollection = require('../models/cartSchema');
 const categoryCollection = require('../models/catergorySchema');
 
 
+
+
 //...............logout......
 const logout = (req,res)=>{
     req.session.user = null;
@@ -24,6 +26,8 @@ const logout = (req,res)=>{
 }
 
 
+
+//shop
 const shop = async (req,res) => {
     const user = req.session.user;
     const category = await categoryCollection.find();
@@ -43,16 +47,13 @@ const shopCategory = async (req,res) => {
     const category = await categoryCollection.find();
     const cart = await cartCollection.find({userEmail:user});
     const products = await productCollection.find({category:categoryName});
-    console.log(categoryName,products);
-
-
 
     res.render('user/shop',{user,cart,products,category});
 }
 
 
 
-//....................nodemailer......................
+//nodemailer
 const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -61,14 +62,21 @@ const transporter = nodemailer.createTransport({
         },
       });
 
-//....................gethome.........................
+
+
+//gethome
 const gethome = async(req,res)=>{
     const user1 = req.session.user;
     const cart = await cartCollection.find({userEmail:user1});
     const message = req.session.message;
     req.session.message = null;
 
-    const user = await registercollection.findOne({email:user1})
+    const user = await registercollection.findOne({email:user1});
+    if(req.session.user){
+        if(user.isBlock == true){
+            res.redirect('/logout');
+        }
+    }
     const products = await productCollection.find();
     const recentlyAdded = await productCollection.find().sort({ _id: -1 }).limit(5);
    
@@ -76,7 +84,8 @@ const gethome = async(req,res)=>{
 }
 
 
-//...................register.........................
+
+//register
 
 const getregister = async(req,res)=>{
     const user = req.session.user;
@@ -166,6 +175,8 @@ const register =asyncHandler(async (req, res) => {
 
 
 
+
+
 //getotp
 const getotp = (req,res) => {
     const email = req.session.registerEmail;
@@ -173,6 +184,8 @@ const getotp = (req,res) => {
     req.session.message = null;
     res.render("user/otp",{email,message});
 }
+
+
 
 
 //postotp
@@ -266,6 +279,8 @@ const getforgotPassword = (req,res)=>{
     res.render('user/forgotPassword');
 }
 
+
+
 const getforgotOtp = (req,res)=>{
     const email = req.session.forgetEmail
     res.render('user/forgotOtp',{email});
@@ -315,15 +330,18 @@ const forgotPassword =asyncHandler(async(req,res)=>{
 const newresetPassword = (req,res) => {
     res.render('user/resetPassword');
 }
+
+
+
+
+
 //postforgotOtp
 
 const postforgotOtp = asyncHandler(async(req,res) => {
-    console.log(1234);
     const email = req.session.forgetEmail;
     const otp = req.body.otpValue;
     const sendOtp = req.session.otp;
 
-    console.log(otp,sendOtp);
    
 
     if(otp == sendOtp){
@@ -335,6 +353,11 @@ const postforgotOtp = asyncHandler(async(req,res) => {
     }
  
 });
+
+
+
+
+//resendOtp1
 
 const resendOtp1 = async(req,res)=> {
     const Otp = generateOTP.generate(4,{digits:true,alphabets:false,specialChars:false});
@@ -358,14 +381,24 @@ const resendOtp1 = async(req,res)=> {
                 }
                 
             });
-            res.redirect('/otp');
+            console.log('qwer');
+            res.redirect('/forgotOtp');
 }
+
+
+
+
 
 //resetPassword
 
 const resetPassword = (req,res) => {
     res.render('user/resetPassword');
 }
+
+
+
+
+//postResetPass
 
 const postResetPass = asyncHandler(async (req, res) => {
     try {
@@ -391,6 +424,10 @@ const postResetPass = asyncHandler(async (req, res) => {
     }
 });
 
+
+
+
+//resendOtp
     const resendOtp = async(req,res)=> {
     const Otp = generateOTP.generate(4,{digits:true,alphabets:false,specialChars:false});
     req.session.otp = null
@@ -401,7 +438,9 @@ const postResetPass = asyncHandler(async (req, res) => {
     const expirationTime = 1 * 60 * 1000; 
 
     setTimeout(async () => {
+
         // Remove the OTP from the document after 1 minute
+        
         await tempregister.updateOne({email:email}, { $unset: { otp: 1 } });
       }, expirationTime);
 
@@ -422,6 +461,9 @@ const postResetPass = asyncHandler(async (req, res) => {
             });
             res.redirect('/otp');
 }
+
+
+
 //product details
 
 const productdetails = async(req,res) => {

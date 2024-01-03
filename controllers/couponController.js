@@ -19,6 +19,19 @@ const verifycoupon = async (req, res) => {
         const coupondb = await couponCollection.findOne({ code: couponvalue });
 
         if (coupondb) {
+            const result = await registerCollection.findOne(
+                {
+                  email: req.session.user,
+                  'usedcoupons.couponName': coupondb.code 
+                },
+                {
+                  'usedcoupons.$': 1
+                }
+              );
+              if(result != null) {
+            res.status(400).json({ message: 'invalid coupon', grandtotal });
+            return;
+              }
             discount = coupondb.discount;
             couponid = coupondb._id
             minvalue = coupondb.minvalue
@@ -59,7 +72,6 @@ const verifycoupon = async (req, res) => {
 
             req.session.coupon = req.body.couponvalue
 
-            console.log(req.session.coupon,req.session.user);
 
             res.status(200).json({ message: 'coupon matching', discount, couponid, newtotal });
         }

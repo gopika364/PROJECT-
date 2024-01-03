@@ -1,4 +1,6 @@
 const mongoose = require('../database/dbConnect');
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 
 const orderSchema = new mongoose.Schema({
     orderItems: [
@@ -23,6 +25,9 @@ const orderSchema = new mongoose.Schema({
       },
     }
   ],
+  grandTotal : {
+    type:Number
+  },
   paymentMethod: {
     type: String,
   },
@@ -41,6 +46,8 @@ const orderSchema = new mongoose.Schema({
     default: Date.now
 },
 });
+
+orderSchema.plugin(mongoosePaginate);
 
 const orderCollection = new mongoose.model('Order', orderSchema);
 
